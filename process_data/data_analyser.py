@@ -7,7 +7,7 @@ data = GetData('../var/train_data/NER-de-train.tsv')
 
 names = set()
 for sentence in data.sents:
-    for (Id, word, label) in sentence.sent:
+    for (Id, word, label, label2) in sentence.sent:
         if label == 'B-PER':
             names.add(word)
 
@@ -50,5 +50,5 @@ print('union:\t', len(union))
 
 output = ", ".join(['"{0}"'.format(x) for x in union])
 
-with open('suffix_list.txt', 'w') as file_handler:
+with open('../var/suffix_list.txt', 'w') as file_handler:
     file_handler.write(output)

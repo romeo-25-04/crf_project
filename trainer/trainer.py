@@ -30,7 +30,7 @@ algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
               'l2sgd',  # 1 for Stochastic Gradient Descent with L2 regularization term
               'ap',     # 2 for Averaged Perceptron
               'pa',     # 3 for Passive Aggressive
-              'arow'    # 4 for Adaptive Regularization Of Weight Vector
+              'arow'    # 4 for Adaptive Regularization Of Weight Vector BEST
               ]
 alg = algorithms[4]
 trainer = BaseTrainer(algorithm=alg)
