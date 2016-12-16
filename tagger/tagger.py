@@ -12,8 +12,15 @@ first_sentence = data.sents[0]
 print(first_sentence.source)
 pp.pprint(first_sentence.sent[:25])
 
+algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
+              'l2sgd',  # 1 for Stochastic Gradient Descent with L2 regularization term
+              'ap',     # 2 for Averaged Perceptron
+              'pa',     # 3 for Passive Aggressive
+              'arow'    # 4 for Adaptive Regularization Of Weight Vector
+              ]
+alg = algorithms[4]
 tagger = Tagger()
-tagger.open('models/word_feature.model')
+tagger.open('models/word_feature_'+alg+'.model')
 
 def tag_sent(word_list):
     sentence = SentenceFeaturesFactory(word_list)
@@ -38,7 +45,7 @@ for sentence in data.sents:
 
 output = "\n".join(output) + '\n'
 
-with open('results/result.tsv', 'w') as result_file:
+with open('results/result_'+alg+'.tsv', 'w') as result_file:
     result_file.write(output)
 
 # print(output)

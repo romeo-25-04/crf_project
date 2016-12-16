@@ -26,11 +26,18 @@ pp.pprint(labels[25:30])
 pp.pprint(features_list[:25])
 features = ItemSequence(features_list)
 
-trainer = BaseTrainer(algorithm='lbfgs')
+algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
+              'l2sgd',  # 1 for Stochastic Gradient Descent with L2 regularization term
+              'ap',     # 2 for Averaged Perceptron
+              'pa',     # 3 for Passive Aggressive
+              'arow'    # 4 for Adaptive Regularization Of Weight Vector
+              ]
+alg = algorithms[4]
+trainer = BaseTrainer(algorithm=alg)
 trainer.set('max_iterations', 50)
 print(trainer.get_params())
 trainer.append(features, labels)
-trainer.train('models/word_feature.model')
+trainer.train('models/word_feature_'+alg+'.model')
 
 
 print()
