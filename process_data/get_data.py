@@ -14,13 +14,13 @@ class GetData:
             self.lines = []
             for line in file_handle:
                 items = line.strip().split('\t')
-                self.lines.append(tuple(items[:-1]))
+                self.lines.append(tuple(items))
 
     def get_sents(self):
         sent = []
         self.sents = []
         for line in self.lines:
-            if len(line) == 0:
+            if line[0] == '':
                 self.sents.append(Sentence(new_source, sent))
                 sent = []
             elif line[0] == '#':

@@ -6,9 +6,9 @@ class Sentence:
 
     def filter_labels(self, labels):
         clean_sent = []
-        for Id, word, label in self.sent:
+        for Id, word, label, label2 in self.sent:
             if label in labels:
-                clean_sent.append((Id, word, label))
+                clean_sent.append((Id, word, label, label2))
             else:
-                clean_sent.append((Id, word, 'O'))
+                clean_sent.append((Id, word, 'O', label2))
         return clean_sent

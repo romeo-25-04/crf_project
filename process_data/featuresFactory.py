@@ -5,8 +5,13 @@ class SentenceFeaturesFactory:
 
     def word_features(self):
         word_feat = []
-        for word in self.sent:
+        for i, word in enumerate(self.sent):
+            if i == 0:
+                prevWord = "<START>"
+            else:
+                prevWord = self.sent[i-1]
             word_dict = {
+                'word-1': prevWord,
                 'word': word,
                 'isCapitalized': word[0].isupper(),
                 'suff4': word[-4:],
