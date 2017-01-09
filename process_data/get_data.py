@@ -8,7 +8,6 @@ class GetData:
         self.sents = None
         self.get_sents()
 
-
     def get_lines(self):
         with open(self.path) as file_handle:
             self.lines = []
@@ -19,6 +18,7 @@ class GetData:
     def get_sents(self):
         sent = []
         self.sents = []
+        new_source = ''
         for line in self.lines:
             if line[0] == '':
                 self.sents.append(Sentence(new_source, sent))

@@ -15,16 +15,13 @@ first_sentence = data.sents[0]
 
 features_list, labels = [], []
 for sentence in data.sents:
-    sent_words = []
-    for (Id, word, label, label2) in sentence.persons:
-        sent_words.append(word)
-        labels.append(label)
+    sent_words = sentence.tokens
     sent_features = SentenceFeaturesFactory(sent_words)
-    features_list.extend(sent_features.features)
+    features_list.append(sent_features.features)
+    labels.append(sentence.outer_labels)
 
-pp.pprint(labels[25:30])
-pp.pprint(features_list[:25])
-features = ItemSequence(features_list)
+pp.pprint(labels[:2])
+pp.pprint(features_list[:2])
 
 algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
               'l2sgd',  # 1 for Stochastic Gradient Descent with L2 regularization term
@@ -34,9 +31,12 @@ algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
               ]
 alg = algorithms[4]
 trainer = BaseTrainer(algorithm=alg)
-trainer.set('max_iterations', 50)
+trainer.set('max_iterations', 20)
 print(trainer.get_params())
-trainer.append(features, labels)
+
+for xseq, yseq in zip(features_list, labels):
+    features = ItemSequence(xseq)
+    trainer.append(features, yseq)
 trainer.train('models/word_feature_'+alg+'.model')
 
 

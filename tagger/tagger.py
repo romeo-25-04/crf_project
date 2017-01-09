@@ -1,8 +1,11 @@
 from pycrfsuite import Tagger
 from pycrfsuite import ItemSequence
+import pprint
+from collections import Counter
+
 from process_data.get_data import GetData
 from process_data.featuresFactory import SentenceFeaturesFactory
-import pprint
+
 pp = pprint.PrettyPrinter(indent=2)
 
 
@@ -23,8 +26,8 @@ tagger = Tagger()
 tagger.open('models/word_feature_'+alg+'.model')
 
 def tag_sent(word_list):
-    sentence = SentenceFeaturesFactory(word_list)
-    features_list = sentence.features
+    sentence_factory = SentenceFeaturesFactory(word_list)
+    features_list = sentence_factory.features
     features = ItemSequence(features_list)
     labels = tagger.tag(features)
     # pp.pprint(list(zip(sent, labels)))
@@ -32,23 +35,27 @@ def tag_sent(word_list):
 
 output = []
 for sentence in data.sents:
-    sent_words = []
-    for (Id, word, label, label2) in sentence.persons:
-        sent_words.append(word)
-    sent_labels = tag_sent(sent_words)
-    labels2 = ['O'] * len(sent_words)
+    sent_words = sentence.tokens
+    sentence.outer_labels_pred = tag_sent(sent_words)
+    sentence.inner_labels_pred = ['O'] * len(sent_words)
 
-    out_sent = zip(sentence.persons, sent_labels, labels2)
-    out_sent = ["\t".join(['\t'.join(line[0]), line[1], line[2]]) for line in out_sent]
+    out_sent = zip(sentence.line_ids, sentence.tokens,
+                   sentence.outer_labels, sentence.inner_labels,
+                   sentence.outer_labels_pred, sentence.inner_labels_pred)
+    out_sent = ["\t".join(line) for line in out_sent]
     out_sent = '\n'.join(out_sent) + '\n'
     output.append(out_sent)
 
-output = "\n".join(output) + '\n'
+output = "\n".join(output)
 
 with open('results/result_'+alg+'.tsv', 'w') as result_file:
     result_file.write(output)
 
-# print(output)
+pp.pprint(output.split('\n')[:20])
+
+# info = tagger.info()
+# transition_features = Counter(info.transitions).most_common(10)
+# pp.pprint(transition_features)
 
 
 # For Tests
