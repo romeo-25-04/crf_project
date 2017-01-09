@@ -6,7 +6,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=2)
 
 
-data = GetData('./test_data/NER-de-test.tsv')
+data = GetData('./test_data/NER-de-dev.tsv')
 print(len(data.lines), data.lines[:16])
 first_sentence = data.sents[0]
 print(first_sentence.source)
