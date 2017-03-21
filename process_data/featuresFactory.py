@@ -1,4 +1,7 @@
 class SentenceFeaturesFactory:
+
+    GAZET_NAMES = ['Roman', 'Jue']
+
     def __init__(self, sent):
         self.sent = sent
         self.features = self.word_features()
@@ -22,6 +25,8 @@ class SentenceFeaturesFactory:
                 'word-1:suff4': prevWord[-4:],
                 'word-1:isPunct': prevWord in ',.!?',
                 'word': word,
+                'word_lower': word.lower(),
+                'wordInNames': word in self.GAZET_NAMES,
                 'isCapitalized': word[0].isupper(),
                 'suff4': word[-4:],
                 'isPunct': word in ',.!?',
