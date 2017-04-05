@@ -25,19 +25,20 @@ alg = algorithms[4]
 tagger = Tagger()
 tagger.open('models/word_feature_'+alg+'.model')
 
-def tag_sent(word_list):
-    sentence_factory = SentenceFeaturesFactory(word_list)
+
+def tag_sent(sentence_obj, i):
+    sentence_factory = SentenceFeaturesFactory(sentence_obj, i, training=False)
     features_list = sentence_factory.features
     features = ItemSequence(features_list)
     labels = tagger.tag(features)
-    # pp.pprint(list(zip(sent, labels)))
+    # pp.pprint(list(zip(sentence_obj, labels)))
     return labels
 
 output = []
 for sentence in data.sents:
-    sent_words = sentence.tokens
-    sentence.outer_labels_pred = tag_sent(sent_words)
-    sentence.inner_labels_pred = ['O'] * len(sent_words)
+    for i, token in enumerate(sentence.tokens):
+        sentence.outer_labels_pred[:i] = tag_sent(sentence, i)
+    sentence.inner_labels_pred = ['O'] * len(sentence.tokens)
 
     out_sent = zip(sentence.line_ids, sentence.tokens,
                    sentence.outer_labels, sentence.inner_labels,

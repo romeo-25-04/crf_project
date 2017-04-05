@@ -5,21 +5,26 @@ class SentenceFeaturesFactory:
 
     GAZET_NAMES = ['Roman', 'Jue']
 
-    def __init__(self, sent):
-        self.sent = sent
-        self.features = self.word_features
+    def __init__(self, sentence, i, training=True):
+        self.sentence = sentence
+        self.training = training
+        self.features = self.word_features(i)
 
-    @property
-    def word_features(self):
+    def word_features(self, last):
         word_feat = []
-        for i, word in enumerate(self.sent):
+
+        for i, word in enumerate(self.sentence.tokens[:last]):
             if i == 0:
                 prevWord = "<BOS>"
+                prevTag = "<BOS>"
             else:
-                prevWord = self.sent[i-1]
+                prevWord = self.sentence.tokens[i - 1]
+                prevTag = self.sentence.outer_labels[i-1] \
+                    if self.training \
+                    else self.sentence.outer_labels_pred[i-1]
 
-            if i < len(self.sent) - 1:
-                next_word = self.sent[i + 1]
+            if i < len(self.sentence.tokens) - 1:
+                next_word = self.sentence.tokens[i + 1]
             else:
                 next_word = '<EOS>'
 
@@ -38,7 +43,8 @@ class SentenceFeaturesFactory:
                 'word+1:isCapitalized': next_word[0].isupper(),
                 'word+1:suff4': next_word[-4:],
                 'word+1:isPunct': next_word in ',.!?',
-                'wordShape': word_shape(word)
+                'wordShape': word_shape(word),
+                'prev_tag': prevTag
             }
             word_feat.append(word_dict)
         return word_feat

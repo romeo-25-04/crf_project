@@ -11,12 +11,12 @@ pp = pprint.PrettyPrinter(indent=2)
 data = GetData('./train_data/NER-de-train.tsv')
 first_sentence = data.sents[0]
 # print(first_sentence.source)
-# pp.pprint(first_sentence.sent[:25])
+# pp.pprint(first_sentence.sentence[:25])
 
 features_list, labels = [], []
 for sentence in data.sents:
-    sent_words = sentence.tokens
-    sent_features = SentenceFeaturesFactory(sent_words)
+    last = len(sentence.tokens)
+    sent_features = SentenceFeaturesFactory(sentence, last)
     features_list.append(sent_features.features)
     labels.append(sentence.outer_labels)
 
