@@ -9,7 +9,7 @@ class GetData:
         self.get_sents()
 
     def get_lines(self):
-        with open(self.path) as file_handle:
+        with open(self.path, encoding="utf8") as file_handle:
             self.lines = []
             for line in file_handle:
                 items = line.strip().split('\t')

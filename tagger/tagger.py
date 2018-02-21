@@ -9,11 +9,11 @@ from process_data.featuresFactory import SentenceFeaturesFactory
 pp = pprint.PrettyPrinter(indent=2)
 
 
-data = GetData('./test_data/NER-de-dev.tsv')
+data = GetData('../var/test_data/NER-de-dev.tsv')
 print(len(data.lines), data.lines[:16])
 first_sentence = data.sents[0]
 print(first_sentence.source)
-pp.pprint(first_sentence.sent[:25])
+# pp.pprint(first_sentence.sent[:25])
 
 algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
               'l2sgd',  # 1 for Stochastic Gradient Descent with L2 regularization term
@@ -23,7 +23,7 @@ algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
               ]
 alg = algorithms[4]
 tagger = Tagger()
-tagger.open('models/word_feature_'+alg+'.model')
+tagger.open('../var/models/word_feature_'+alg+'.model')
 
 
 def tag_sent(sentence_obj, i):
@@ -31,7 +31,6 @@ def tag_sent(sentence_obj, i):
     features_list = sentence_factory.features
     features = ItemSequence(features_list)
     labels = tagger.tag(features)
-    # pp.pprint(list(zip(sentence_obj, labels)))
     return labels
 
 output = []
@@ -57,15 +56,3 @@ pp.pprint(output.split('\n')[:20])
 # info = tagger.info()
 # transition_features = Counter(info.transitions).most_common(10)
 # pp.pprint(transition_features)
-
-
-# For Tests
-# sent_str = "Seit 2015 arbeitet Jue Wang bei Gini GmbH ."
-# sent_str = "Zuletzt war es Wolfram Graf-Rudolf , Chef des Zoos in Aachen ."
-# sent_str = "Die ursprüngliche Apfeldiätspeise „ d Spys “ Das ursprüngliche Birchermues ist eine Schweizer Spezialität und wurde um 1900 Albert Wirz Doktor Birchers neue Weltordnung ."
-# tag_sent(sent_str)
-
-
-
-
-
