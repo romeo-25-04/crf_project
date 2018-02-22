@@ -12,3 +12,7 @@ mkdir downloads
 
 Download data from [GermEval 2014](https://sites.google.com/site/germeval2014ner/)
 
+## Requirements
+See `requirements.txt`
+For nltk-data see [nltk-data](https://www.nltk.org/data.html)
+

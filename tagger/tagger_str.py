@@ -2,6 +2,7 @@ from pycrfsuite import Tagger
 from pycrfsuite import ItemSequence
 import pprint
 import json
+import nltk
 
 from process_data.featuresFactory import SentenceFeaturesFactory
 from process_data.sentence import Sentence
@@ -24,7 +25,7 @@ else:
 
 def tag_sent(sent_str):
     list_of_lines = [(id_line + 1, token, 'X', 'X')
-                     for id_line, token in enumerate(sent_str.split(' '))]
+                     for id_line, token in enumerate(nltk.word_tokenize(sent_str))]
     sentence = Sentence('test', list_of_lines)
     for i, token in enumerate(sentence.tokens):
         sentence_factory = SentenceFeaturesFactory(sentence, i, training=False)
@@ -36,7 +37,7 @@ def tag_sent(sent_str):
 
 
 if __name__ == "__main__":
-    sent_str = ""
+    sent_str = "Das ist ein magisches test Satz von Roman Capsamun."
     sentence = tag_sent(sent_str)
     result = list(zip(sentence.tokens, sentence.outer_labels_pred))
     print(sentence.outer_labels_pred)
