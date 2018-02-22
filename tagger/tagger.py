@@ -48,7 +48,7 @@ for sentence in data.sents:
 
 output = "\n".join(output)
 
-with open('results/result_'+alg+'.tsv', 'w') as result_file:
+with open('../var/results/result_'+alg+'.tsv', 'w', encoding="utf8") as result_file:
     result_file.write(output)
 
 pp.pprint(output.split('\n')[:20])

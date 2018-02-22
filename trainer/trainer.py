@@ -31,7 +31,7 @@ algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
               ]
 alg = algorithms[4]
 trainer = BaseTrainer(algorithm=alg)
-trainer.set('max_iterations', 20)
+trainer.set('max_iterations', 100)
 print(trainer.get_params())
 
 for xseq, yseq in zip(features_list, labels):
