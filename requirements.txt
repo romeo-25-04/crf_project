@@ -5,6 +5,7 @@ itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 matplotlib==2.1.2
+nltk==3.2.5
 numpy==1.14.1
 pyparsing==2.2.0
 python-crfsuite==0.9.5
