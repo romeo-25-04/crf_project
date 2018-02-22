@@ -2,7 +2,6 @@ import re
 
 
 class SentenceFeaturesFactory:
-
     GAZET_NAMES = ['Roman', 'Jue']
 
     def __init__(self, sentence, i, training=True):
@@ -15,39 +14,64 @@ class SentenceFeaturesFactory:
 
         for i, word in enumerate(self.sentence.tokens[:last]):
             if i == 0:
+                prevWord2 = "<BOS>"
+                prevTag2 = "<BOS>"
+                prevPOS2 = "<BOS>"
                 prevWord = "<BOS>"
                 prevTag = "<BOS>"
-            else:
+                prevPOS = "<BOS>"
+            elif i == 1:
+                prevWord2 = "<BOS>"
+                prevTag2 = "<BOS>"
+                prevPOS2 = "<BOS>"
                 prevWord = self.sentence.tokens[i - 1]
-                prevTag = self.sentence.outer_labels[i-1] \
+                prevPOS = self.sentence.poss[i - 1]
+                prevTag = self.sentence.outer_labels[i - 1] \
                     if self.training \
-                    else self.sentence.outer_labels_pred[i-1]
+                    else self.sentence.outer_labels_pred[i - 1]
+            else:
+                prevWord2 = self.sentence.tokens[i - 2]
+                prevTag2 = self.sentence.outer_labels[i - 2] \
+                    if self.training \
+                    else self.sentence.outer_labels_pred[i - 2]
+                prevPOS2 = self.sentence.poss[i - 2]
+                prevPOS = self.sentence.poss[i - 1]
+                prevWord = self.sentence.tokens[i - 1]
+                prevTag = self.sentence.outer_labels[i - 1] \
+                    if self.training \
+                    else self.sentence.outer_labels_pred[i - 1]
 
             if i < len(self.sentence.tokens) - 1:
                 next_word = self.sentence.tokens[i + 1]
+                next_pos = self.sentence.poss[i + 1]
             else:
                 next_word = '<EOS>'
+                next_pos = '<EOS>'
 
             word_dict = {
-                'word-1': prevWord,
-                'word-1:isCapitalized': prevWord[0].isupper(),
-                'word-1:suff4': prevWord[-4:],
-                'word-1:isPunct': prevWord in ',.!?',
-                'word': word,
-                'word_lower': word.lower(),
-                'wordInNames': word in self.GAZET_NAMES,
-                'isCapitalized': word[0].isupper(),
-                'suff4': word[-4:],
-                'isPunct': word in ',.!?',
-                'word+1': next_word,
-                'word+1:isCapitalized': next_word[0].isupper(),
-                'word+1:suff4': next_word[-4:],
-                'word+1:isPunct': next_word in ',.!?',
-                'wordShape': word_shape(word),
-                'prev_tag': prevTag
+                'prev_tag': prevTag,
+                'prev_tag2': prevTag2,
+                'prev_pos': prevPOS,
+                'prev_pos2': prevPOS2,
+                'next_pos': next_pos
             }
+            word_dict.update(self.token_features(word, '0'))
+            word_dict.update(self.token_features(prevWord2, '-2'))
+            word_dict.update(self.token_features(prevWord, '-1'))
+            word_dict.update(self.token_features(next_word, '+1'))
             word_feat.append(word_dict)
         return word_feat
+
+    def token_features(self, token, index):
+        return {
+            'word_' + index: token,
+            'word_' + index + '_lower': token.lower(),
+            'word_' + index + '_InNames': token in self.GAZET_NAMES,
+            'word_' + index + '_isCapitalized': token[0].isupper(),
+            'word_' + index + '_suff4': token[-4:],
+            'word_' + index + '_isPunct': token in ',.!?',
+            'word_' + index + '_wordShape': word_shape(token),
+        }
 
 
 def word_shape(word):
