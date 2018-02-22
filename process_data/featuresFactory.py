@@ -1,8 +1,9 @@
 import re
+from nltk.corpus import names
 
 
 class SentenceFeaturesFactory:
-    GAZET_NAMES = ['Roman', 'Jue']
+    GAZET_NAMES = [name for name in names.words()]
 
     def __init__(self, sentence, i, training=True):
         self.sentence = sentence
@@ -71,6 +72,7 @@ class SentenceFeaturesFactory:
             'word_' + index + '_suff4': token[-4:],
             'word_' + index + '_isPunct': token in ',.!?',
             'word_' + index + '_wordShape': word_shape(token),
+            'word_' + index + '_inGazet': token in self.GAZET_NAMES
         }
 
 
