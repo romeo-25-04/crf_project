@@ -16,7 +16,10 @@ algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
               ]
 alg = algorithms[4]
 tagger = Tagger()
-tagger.open('../var/models/word_feature_'+alg+'.model')
+if __name__ == "__main__":
+    tagger.open('../var/models/word_feature_'+alg+'.model')
+else:
+    tagger.open('./var/models/word_feature_' + alg + '.model')
 
 
 def tag_sent(sent_str):
@@ -32,14 +35,15 @@ def tag_sent(sent_str):
     return sentence
 
 
-sent_str = "Seit 2015 arbeitet Alina bei Tezenis ."
-sentence = tag_sent(sent_str)
-result = list(zip(sentence.tokens, sentence.outer_labels_pred))
-print(sentence.outer_labels_pred)
-result = [{"token": token,
-           "label": sentence.outer_labels_pred[i]}
-          for i, token in enumerate(sentence.tokens)]
-pp.pprint(result)
+if __name__ == "__main__":
+    sent_str = ""
+    sentence = tag_sent(sent_str)
+    result = list(zip(sentence.tokens, sentence.outer_labels_pred))
+    print(sentence.outer_labels_pred)
+    result = [{"token": token,
+               "label": sentence.outer_labels_pred[i]}
+              for i, token in enumerate(sentence.tokens)]
+    pp.pprint(result)
 
-result_json = json.dumps(result)
-print(result_json)
+    result_json = json.dumps(result)
+    print(result_json)
