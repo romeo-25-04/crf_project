@@ -16,4 +16,4 @@ def index():
     return render_template('index.html',
                            title="NER-Tagging in german",
                            sent_str=sent_str,
-                           sentence=zip(sentence.tokens, sentence.outer_labels_pred))
+                           sentence=zip(sentence.tokens, sentence.outer_labels_pred, sentence.poss))

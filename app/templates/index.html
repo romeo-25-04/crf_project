@@ -36,14 +36,16 @@
                 <th scope="col">#</th>
                 <th scope="col">Words</th>
                 <th scope="col">Labels</th>
+                <th scope="col">POS</th>
             </tr>
             </thead>
             <tbody>
-            {% for token, label in sentence %}
+            {% for token, label, pos in sentence %}
             <tr class="{% if label != 'O' %}table-success{% endif %}">
                 <td scope="col">{{ loop.index }}</td>
                 <td scope="col">{{ token }}</td>
                 <td scope="col">{{ label }}</td>
+                <td scope="col">{{ pos }}</td>
             </tr>
             {% endfor %}
             </tbody>
