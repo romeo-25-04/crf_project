@@ -23,7 +23,7 @@ def bio_classification_report(y_true, y_pred):
     )
 
 
-result = GetData('../var/results/result_arow.tsv')
+result = GetData('var/results/result_arow.tsv')
 
 print(result.sents[0].outer_labels_pred)
 

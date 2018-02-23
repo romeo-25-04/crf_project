@@ -8,7 +8,7 @@ from process_data.featuresFactory import SentenceFeaturesFactory
 pp = pprint.PrettyPrinter(indent=2)
 
 
-data = GetData('../var/train_data/NER-de-train.tsv')
+data = GetData('var/train_data/NER-de-train.tsv')
 first_sentence = data.sents[0]
 # print(first_sentence.source)
 # pp.pprint(first_sentence.sentence[:25])
@@ -37,7 +37,7 @@ print(trainer.get_params())
 for xseq, yseq in zip(features_list, labels):
     features = ItemSequence(xseq)
     trainer.append(features, yseq)
-trainer.train('../var/models/word_feature_'+alg+'.model')
+trainer.train('var/models/word_feature_'+alg+'.model')
 
 
 print()

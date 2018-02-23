@@ -9,7 +9,7 @@ from process_data.featuresFactory import SentenceFeaturesFactory
 pp = pprint.PrettyPrinter(indent=2)
 
 
-data = GetData('../var/test_data/NER-de-dev.tsv')
+data = GetData('var/test_data/NER-de-dev.tsv')
 print(len(data.lines), data.lines[:16])
 first_sentence = data.sents[0]
 print(first_sentence.source)
@@ -23,7 +23,7 @@ algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
               ]
 alg = algorithms[4]
 tagger = Tagger()
-tagger.open('../var/models/word_feature_'+alg+'.model')
+tagger.open('var/models/word_feature_'+alg+'.model')
 
 
 def tag_sent(sentence_obj, i):
@@ -32,6 +32,7 @@ def tag_sent(sentence_obj, i):
     features = ItemSequence(features_list)
     labels = tagger.tag(features)
     return labels
+
 
 output = []
 for sentence in data.sents:
@@ -48,7 +49,7 @@ for sentence in data.sents:
 
 output = "\n".join(output)
 
-with open('../var/results/result_'+alg+'.tsv', 'w', encoding="utf8") as result_file:
+with open('var/results/result_'+alg+'.tsv', 'w', encoding="utf8") as result_file:
     result_file.write(output)
 
 pp.pprint(output.split('\n')[:20])

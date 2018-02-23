@@ -1,4 +1,10 @@
-import nltk
+import pickle
+
+path = 'german_pos/nltk_german_classifier_data.pickle'
+
+
+with open(path, 'rb') as f:
+    tagger = pickle.load(f)
 
 
 class Sentence:
@@ -25,4 +31,4 @@ class Sentence:
                 self.outer_labels_pred.append(line_tup[4])
                 self.inner_labels_pred.append(line_tup[5])
         self.poss = [pos
-                     for token, pos in nltk.pos_tag(self.tokens, lang="deu")]
+                     for token, pos in tagger.tag(self.tokens)]
