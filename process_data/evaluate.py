@@ -2,6 +2,8 @@ from itertools import chain
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.preprocessing import LabelBinarizer
 import sklearn
+from pycrfsuite import Tagger
+from collections import Counter
 
 from process_data.get_data import GetData
 
@@ -23,12 +25,41 @@ def bio_classification_report(y_true, y_pred):
     )
 
 
-result = GetData('var/results/result_arow.tsv')
+# result = GetData('var/results/result_arow.tsv')
+#
+# print(result.sents[0].outer_labels_pred)
+#
+# gtru = [sentence.outer_labels for sentence in result.sents]
+# pred = [sentence.outer_labels_pred for sentence in result.sents]
+# print(len(gtru), len(pred))
+#
+# print(bio_classification_report(gtru, pred))
 
-print(result.sents[0].outer_labels_pred)
+tagger = Tagger()
+tagger.open('var/models/word_feature_arow.model')
 
-gtru = [sentence.outer_labels for sentence in result.sents]
-pred = [sentence.outer_labels_pred for sentence in result.sents]
-print(len(gtru), len(pred))
+info = tagger.info()
 
-print(bio_classification_report(gtru, pred))
+
+def print_transitions(trans_features):
+    for (label_from, label_to), weight in trans_features:
+        print("%-6s -> %-7s %0.6f" % (label_from, label_to, weight))
+
+
+print("Top likely transitions:")
+print_transitions(Counter(info.transitions).most_common(15))
+
+print("\nTop unlikely transitions:")
+print_transitions(Counter(info.transitions).most_common()[-15:])
+
+
+def print_state_features(state_features):
+    for (attr, label), weight in state_features:
+        print("%0.6f %-6s %s" % (weight, label, attr))
+
+
+print("Top positive:")
+print_state_features(Counter(info.state_features).most_common(20))
+
+print("\nTop negative:")
+print_state_features(Counter(info.state_features).most_common()[-20:])
