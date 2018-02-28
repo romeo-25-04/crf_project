@@ -1,9 +1,9 @@
-from process_data.get_data import GetData
+from process_data.get_data import Dataset
 import pprint
 pp = pprint.PrettyPrinter(indent=2)
 
 
-data = GetData('../var/train_data/NER-de-train.tsv')
+data = Dataset('../var/train_data/NER-de-train.tsv')
 
 names = set()
 for sentence in data.sents:

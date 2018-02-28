@@ -3,13 +3,13 @@ from pycrfsuite import ItemSequence
 import pprint
 from collections import Counter
 
-from process_data.get_data import GetData
+from process_data.get_data import Dataset
 from process_data.featuresFactory import SentenceFeaturesFactory
 
 pp = pprint.PrettyPrinter(indent=2)
 
 
-data = GetData('var/test_data/NER-de-dev.tsv')
+data = Dataset('var/test_data/NER-de-dev.tsv')
 print(len(data.lines), data.lines[:16])
 first_sentence = data.sents[0]
 print(first_sentence.source)

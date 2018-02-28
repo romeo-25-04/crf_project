@@ -5,7 +5,7 @@ import sklearn
 from pycrfsuite import Tagger
 from collections import Counter
 
-from process_data.get_data import GetData
+from process_data.get_data import Dataset
 
 def bio_classification_report(y_true, y_pred):
     lb = LabelBinarizer()

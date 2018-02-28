@@ -2,13 +2,13 @@ import pprint
 from pycrfsuite import ItemSequence
 from pycrfsuite import BaseTrainer
 
-from process_data.get_data import GetData
+from process_data.get_data import Dataset
 from process_data.featuresFactory import SentenceFeaturesFactory
 
 pp = pprint.PrettyPrinter(indent=2)
 
 
-data = GetData('var/train_data/NER-de-train.tsv')
+data = Dataset('var/train_data/NER-de-train.tsv')
 first_sentence = data.sents[0]
 # print(first_sentence.source)
 # pp.pprint(first_sentence.sentence[:25])
