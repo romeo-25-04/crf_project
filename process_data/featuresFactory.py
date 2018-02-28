@@ -12,8 +12,10 @@ class SentenceFeaturesFactory:
 
     def word_features(self, last):
         word_feat = []
-
-        for i, word in enumerate(self.sentence.tokens[:last]):
+        tokens = self.sentence.get_list_of_tokens()
+        poss = self.sentence.get_list_of_part_of_speech()
+        outer_labels = self.sentence.get_list_of_outer_label_gold()
+        for i, word in enumerate(tokens[:last]):
             if i == 0:
                 prevWord2 = "<BOS>"
                 prevTag2 = "<BOS>"
@@ -25,26 +27,23 @@ class SentenceFeaturesFactory:
                 prevWord2 = "<BOS>"
                 prevTag2 = "<BOS>"
                 prevPOS2 = "<BOS>"
-                prevWord = self.sentence.tokens[i - 1]
-                prevPOS = self.sentence.poss[i - 1]
-                prevTag = self.sentence.outer_labels[i - 1] \
-                    if self.training \
-                    else self.sentence.outer_labels_pred[i - 1]
+                prevWord = tokens[i - 1]
+                prevPOS = poss[i - 1]
+                prevTag = outer_labels[i - 1] if self.training \
+                    else self.sentence.get_list_of_outer_label_pred()[i - 1]
             else:
-                prevWord2 = self.sentence.tokens[i - 2]
-                prevTag2 = self.sentence.outer_labels[i - 2] \
-                    if self.training \
-                    else self.sentence.outer_labels_pred[i - 2]
-                prevPOS2 = self.sentence.poss[i - 2]
-                prevPOS = self.sentence.poss[i - 1]
-                prevWord = self.sentence.tokens[i - 1]
-                prevTag = self.sentence.outer_labels[i - 1] \
-                    if self.training \
-                    else self.sentence.outer_labels_pred[i - 1]
+                prevWord2 = tokens[i - 2]
+                prevTag2 = outer_labels[i - 2] if self.training \
+                    else self.sentence.get_list_of_outer_label_pred()[i - 2]
+                prevPOS2 = poss[i - 2]
+                prevPOS = poss[i - 1]
+                prevWord = tokens[i - 1]
+                prevTag = outer_labels[i - 1] if self.training \
+                    else self.sentence.get_list_of_outer_label_pred()[i - 1]
 
-            if i < len(self.sentence.tokens) - 1:
-                next_word = self.sentence.tokens[i + 1]
-                next_pos = self.sentence.poss[i + 1]
+            if i < len(tokens) - 1:
+                next_word = tokens[i + 1]
+                next_pos = poss[i + 1]
             else:
                 next_word = '<EOS>'
                 next_pos = '<EOS>'

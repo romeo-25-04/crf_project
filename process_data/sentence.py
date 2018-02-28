@@ -1,4 +1,5 @@
 import pickle
+from process_data.word import Word
 
 path = 'german_pos/nltk_german_classifier_data.pickle'
 
@@ -10,25 +11,29 @@ with open(path, 'rb') as f:
 class Sentence:
     def __init__(self, source_str, list_of_lines):
         self.source = source_str
-        self.sent = list_of_lines
-        self.line_ids = []
-        self.tokens = []
-        self.poss = []
-        self.outer_labels = []
-        self.inner_labels = []
-        self.outer_labels_pred = []
-        self.inner_labels_pred = []
+        self.sent = [Word(line) for line in list_of_lines]
         self.process()
 
     def process(self):
-        for line_tup in self.sent:
-            self.line_ids.append(line_tup[0])
-            self.tokens.append(line_tup[1])
-            if len(line_tup) > 2:
-                self.outer_labels.append(line_tup[2])
-                self.inner_labels.append(line_tup[3])
-            if len(line_tup) > 4:
-                self.outer_labels_pred.append(line_tup[4])
-                self.inner_labels_pred.append(line_tup[5])
-        self.poss = [pos
-                     for token, pos in tagger.tag(self.tokens)]
+        tokens = [word.token for word in self.sent]
+        for i, (token, pos) in enumerate(tagger.tag(tokens)):
+            word = self.sent[i]
+            word.part_of_speech = pos
+
+    def get_list_of_tokens(self):
+        return [word.token for word in self.sent]
+
+    def get_list_of_outer_label_gold(self):
+        return [word.outer_label_gold for word in self.sent]
+
+    def get_list_of_inner_label_gold(self):
+        return [word.inner_label_gold for word in self.sent]
+
+    def get_list_of_outer_label_pred(self):
+        return [word.outer_label_pred for word in self.sent]
+
+    def get_list_of_inner_label_pred(self):
+        return [word.inner_label_pred for word in self.sent]
+
+    def get_list_of_part_of_speech(self):
+        return [word.part_of_speech for word in self.sent]

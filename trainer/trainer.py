@@ -15,10 +15,10 @@ first_sentence = data.sents[0]
 
 features_list, labels = [], []
 for sentence in data.sents:
-    last = len(sentence.tokens)
+    last = len(sentence.sent)
     sent_features = SentenceFeaturesFactory(sentence, last)
     features_list.append(sent_features.features)
-    labels.append(sentence.outer_labels)
+    labels.append(sentence.get_list_of_outer_label_gold())
 
 pp.pprint(labels[:2])
 pp.pprint(features_list[:2])

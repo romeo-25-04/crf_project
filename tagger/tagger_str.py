@@ -27,23 +27,21 @@ def tag_sent(sent_str):
     list_of_lines = [(id_line + 1, token, 'X', 'X')
                      for id_line, token in enumerate(nltk.word_tokenize(sent_str))]
     sentence = Sentence('test', list_of_lines)
-    for i, token in enumerate(sentence.tokens):
+    for i, word in enumerate(sentence.sent):
         sentence_factory = SentenceFeaturesFactory(sentence, i, training=False)
         features_list = sentence_factory.features
         features = ItemSequence(features_list)
-        sentence.outer_labels_pred[:i] = tagger.tag(features)
-    sentence.outer_labels_pred.append('O')
+        word.outer_label_pred = tagger.tag(features)[i]
     return sentence
 
 
 if __name__ == "__main__":
     sent_str = "Das ist ein magisches test Satz von Roman Capsamun."
     sentence = tag_sent(sent_str)
-    result = list(zip(sentence.tokens, sentence.outer_labels_pred))
-    print(sentence.outer_labels_pred)
-    result = [{"token": token,
-               "label": sentence.outer_labels_pred[i]}
-              for i, token in enumerate(sentence.tokens)]
+    result = list(zip(sentence.get_list_of_tokens(), sentence.get_list_of_outer_label_pred()))
+    result = [{"token": word.token,
+               "label": word.outer_label_pred}
+              for word in sentence.sent]
     pp.pprint(result)
 
     result_json = json.dumps(result)

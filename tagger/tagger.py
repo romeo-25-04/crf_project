@@ -36,14 +36,13 @@ def tag_sent(sentence_obj, i):
 
 output = []
 for sentence in data.sents:
-    for i, token in enumerate(sentence.tokens):
-        sentence.outer_labels_pred[:i] = tag_sent(sentence, i)
-    sentence.inner_labels_pred = ['O'] * len(sentence.tokens)
+    tokens = sentence.get_list_of_tokens()
+    for i, word in enumerate(sentence.sent):
+        prediction_labels = tag_sent(sentence, i)
+        word.outer_label_pred = prediction_labels[i]
+        word.inner_label_pred = 'O'
 
-    out_sent = zip(sentence.line_ids, sentence.tokens,
-                   sentence.outer_labels, sentence.inner_labels,
-                   sentence.outer_labels_pred, sentence.inner_labels_pred)
-    out_sent = ["\t".join(line) for line in out_sent]
+    out_sent = [str(word) for word in sentence.sent]
     out_sent = '\n'.join(out_sent) + '\n'
     output.append(out_sent)
 
