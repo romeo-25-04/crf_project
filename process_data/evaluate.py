@@ -58,7 +58,7 @@ def print_state_features(state_features):
         print("%0.6f %-6s %s" % (weight, label, attr))
 
 
-print("Top positive:")
+print("\nTop positive:")
 print_state_features(Counter(info.state_features).most_common(20))
 
 print("\nTop negative:")

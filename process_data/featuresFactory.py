@@ -16,6 +16,7 @@ class SentenceFeaturesFactory:
         poss = self.sentence.get_list_of_part_of_speech()
         outer_labels = self.sentence.get_list_of_outer_label_gold()
         for i, word in enumerate(tokens[:last]):
+            pos = poss[i]
             if i == 0:
                 prevWord2 = "<BOS>"
                 prevTag2 = "<BOS>"
@@ -53,7 +54,12 @@ class SentenceFeaturesFactory:
                 'prev_tag2': prevTag2,
                 'prev_pos': prevPOS,
                 'prev_pos2': prevPOS2,
-                'next_pos': next_pos
+                'next_pos': next_pos,
+                'word_0_pos': pos,
+                'word_-1|word_0|word_+1': prevWord + '|' + word + '|' + next_word,
+                'word_-2|word_-1|word_0|word_+1': prevWord2 + '|' + prevWord + '|' + word + '|' + next_word,
+                'pos_-1|pos_0|pos_+1': prevPOS + '|' + pos + '|' + next_pos,
+                'pos_-2|pos_-1|pos_0|pos_+1': prevPOS2 + '|' + prevPOS + '|' + pos + '|' + next_pos
             }
             word_dict.update(self.token_features(word, '0'))
             word_dict.update(self.token_features(prevWord2, '-2'))
