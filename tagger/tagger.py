@@ -38,7 +38,7 @@ output = []
 for sentence in data.sents:
     tokens = sentence.get_list_of_tokens()
     for i, word in enumerate(sentence.sent):
-        prediction_labels = tag_sent(sentence, i)
+        prediction_labels = tag_sent(sentence, i+1)
         word.outer_label_pred = prediction_labels[i]
         word.inner_label_pred = 'O'
 

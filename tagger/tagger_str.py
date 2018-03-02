@@ -18,7 +18,7 @@ algorithms = ['lbfgs',  # 0 for Gradient descent using the L-BFGS method,
 alg = algorithms[4]
 tagger = Tagger()
 if __name__ == "__main__":
-    tagger.open('../var/models/word_feature_'+alg+'.model')
+    tagger.open('var/models/word_feature_'+alg+'.model')
 else:
     tagger.open('./var/models/word_feature_' + alg + '.model')
 
@@ -28,7 +28,7 @@ def tag_sent(sent_str):
                      for id_line, token in enumerate(nltk.word_tokenize(sent_str))]
     sentence = Sentence('test', list_of_lines)
     for i, word in enumerate(sentence.sent):
-        sentence_factory = SentenceFeaturesFactory(sentence, i, training=False)
+        sentence_factory = SentenceFeaturesFactory(sentence, i+1, training=False)
         features_list = sentence_factory.features
         features = ItemSequence(features_list)
         word.outer_label_pred = tagger.tag(features)[i]

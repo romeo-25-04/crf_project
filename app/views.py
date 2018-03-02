@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, request
 
 from process_data.sentence import Sentence
-from tagger.tagger_str import tagger, tag_sent
+from tagger.tagger_str import tag_sent
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -16,4 +16,5 @@ def index():
     return render_template('index.html',
                            title="NER-Tagging in german",
                            sent_str=sent_str,
-                           sentence=zip(sentence.tokens, sentence.outer_labels_pred, sentence.poss))
+                           sentence=[(word.token, word.outer_label_pred, word.part_of_speech)
+                                     for word in sentence.sent])

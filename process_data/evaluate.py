@@ -25,15 +25,15 @@ def bio_classification_report(y_true, y_pred):
     )
 
 
-# result = GetData('var/results/result_arow.tsv')
-#
-# print(result.sents[0].outer_labels_pred)
-#
-# gtru = [sentence.outer_labels for sentence in result.sents]
-# pred = [sentence.outer_labels_pred for sentence in result.sents]
-# print(len(gtru), len(pred))
-#
-# print(bio_classification_report(gtru, pred))
+result = Dataset('var/results/result_arow.tsv')
+
+print(result.sents[0].get_list_of_outer_label_pred())
+
+gtru = [sentence.get_list_of_outer_label_gold() for sentence in result.sents]
+pred = [sentence.get_list_of_outer_label_pred() for sentence in result.sents]
+print(len(gtru), len(pred))
+
+print(bio_classification_report(gtru, pred))
 
 tagger = Tagger()
 tagger.open('var/models/word_feature_arow.model')
