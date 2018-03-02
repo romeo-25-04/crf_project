@@ -1,7 +1,7 @@
 import nltk
 import random
 import pickle
-from downloads.ClassifierBasedGermanTagger import ClassifierBasedGermanTagger
+from german_pos.ClassifierBasedGermanTagger import ClassifierBasedGermanTagger
 
 corp = nltk.corpus.ConllCorpusReader('../downloads', 'tiger_release_aug07.corrected.16012013.conll09',
                                      ['ignore', 'words', 'ignore', 'ignore', 'pos'],
