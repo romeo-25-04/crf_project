@@ -15,14 +15,22 @@
     <title>{{ title }}</title>
 </head>
 <body class="container">
-<h1>{{ title }}</h1>
+<div class="jumbotron">
+    <h1 class="display-4">{{ title }}</h1>
+    <p class="lead">This is a simple demonstration of the Named Entity Recognition with CRF for german language.</p>
+    <p class="lead">Training and test data are from
+        <a href="https://sites.google.com/site/germeval2014ner/" target="_blank">GermEval 2014</a>.</p>
+    <hr class="my-4">
+    <p>Author: Roman Capsamun</p>
+</div>
 {% block body %}
 <div class="card">
+    <a id="results">
     <div class="card-body">
-        <form method="post">
+        <form method="post" action="/#results">
             <div class="form-group">
                 <label for="exampleSentence">Geben Sie hier ein deutsches Satz ein um die Namen zu erkennen.</label>
-                <input class="form-control" id="exampleSentence" name="exampleSentence">
+                <input class="form-control" id="exampleSentence" name="exampleSentence" value="{{ sent_str }}">
             </div>
             <button type="submit" class="btn btn-primary">Taggen</button>
         </form>
