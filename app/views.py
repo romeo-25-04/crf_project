@@ -16,5 +16,5 @@ def index():
     return render_template('index.html',
                            title="NER-Tagging in german",
                            sent_str=sent_str,
-                           sentence=[(word.token, word.outer_label_pred, word.part_of_speech)
+                           sentence=[(word.token, word.outer_label_pred)
                                      for word in sentence.sent])
